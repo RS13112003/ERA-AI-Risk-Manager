@@ -8,3 +8,6 @@ joblib==1.5.3
 matplotlib==3.11.1
 seaborn==0.13.2
 streamlit==1.62.0
+fastapi
+uvicorn
+pydantic
