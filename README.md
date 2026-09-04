@@ -443,7 +443,7 @@ In a real financial environment, this value would typically be calibrated using 
 
 ##  Testing
 
-The original Credit Card Fraud Detection dataset used for model training is not included in this repository because of GitHub's file-size limitations. The dataset source, attribution, and download information are documented separately in data/README.md.
+The original Credit Card Fraud Detection dataset used for model training is not included in this repository because of GitHub's file-size limitations. The dataset source, attribution, and download information are documented separately in [`data/README.md`](data/README.md)
 
 The repository includes separate sample CSV datasets under the data/ directory so that the application can be tested without requiring the original training dataset.
 
@@ -464,7 +464,7 @@ data/validation/
 
 
 These files are intended to demonstrate the prediction, batch-risk assessment, investigation workflow, and SHAP-based transaction explanation capabilities of the application.
-For details about the original training dataset, including its source and how it was used during model development, see:   data/README.md
+For details about the original training dataset, including its source and how it was used during model development, see:   [`data/README.md`](data/README.md)
 
 ##  Author
 
