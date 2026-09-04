@@ -393,18 +393,18 @@ This failure changed how I approached the system.
 The initial assumption was effectively:
 
 ```text
-"Train a good classifier -> use the standard 0.50 threshold"
+Train a good classifier -> use the standard 0.50 threshold
 ```
 
 The corrected approach became:
 
 ```text
-"Train a useful classifier
+Train a useful classifier
  -> evaluate it honestly
  -> define the cost of mistakes
  -> optimize the operating threshold on validation data
  -> freeze the decision policy
- -> evaluate once on unseen test data"
+ -> evaluate once on unseen test data
 ```
 
 For a real merchant-risk workflow, the classification threshold is therefore not treated as a universal ML default. It is a **risk-policy decision** that depends on the cost of false positives, false negatives, operational capacity, and the consequences of intervention.
@@ -443,14 +443,27 @@ In a real financial environment, this value would typically be calibrated using 
 
 ##  Testing
 
+The original Credit Card Fraud Detection dataset used for model training is not included in this repository because of GitHub's file-size limitations. The dataset source, attribution, and download information are documented separately in data/README.md.
+
+The repository includes separate sample CSV datasets under the data/ directory so that the application can be tested without requiring the original training dataset.
+
 A separate sample/test dataset is provided so that users can test the application without modifying the training dataset.
 
 Recommended testing flow:
 
 ```text
-Clone Repository ->  Install Dependencies -> Start Backend -> Start Frontend -> Upload Sample CSV -> Run Prediction -> Inspect Risk Results -> Inspect SHAP Explanation
+Clone Repository ->  Install Dependencies -> Start Backend -> Start Frontend -> Upload Sample CSV/Test CSV -> Run Prediction -> Inspect Risk Results -> Inspect SHAP Explanation
 ```
+***Important Dataset Note***
 
+The original training dataset is used only for model development and training. It is not required when using the already-trained model through the web application.
+For application testing, use the provided sample datasets in:
+
+data/demo/
+data/validation/
+
+These files are intended to demonstrate the prediction, batch-risk assessment, investigation workflow, and SHAP-based transaction explanation capabilities of the application.
+For details about the original training dataset, including its source and how it was used during model development, see:   data/README.md
 
 ##  Author
 
@@ -469,7 +482,7 @@ The core objective of **AI Risk Manager** is not simply to predict fraud.
 It is to demonstrate how machine learning predictions can be transformed into an understandable **risk-management workflow**:
 
 ```text
-Prediction  +  Probability  +  Threshold  +  Explanation  ->  Actionable Risk Decision
+Prediction  +  Probability  +  Threshold  +  Explanation  =>  Actionable Risk Decision
 ```
 
 That combination is what turns a machine-learning model into a practical risk-management application.
