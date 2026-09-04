@@ -68,6 +68,7 @@ app.add_middleware(
 # ============================================================
 
 _DEMO_DATA_PATH = PROJECT_ROOT / "data" / "tranning" /"creditcard.csv"
+# In my local machine there is creditcard.csv under tranning subfolder, its not possible to upload the csv file due to size limit 
 
 try:
     _demo_df = pd.read_csv(_DEMO_DATA_PATH)
