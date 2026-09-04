@@ -351,7 +351,7 @@ Final frozen threshold = 0.03
 
 Importantly, I did **not** choose this threshold by looking at the final test-set result and then tuning it against that same test set. The threshold was selected using the validation stage and then **frozen before final evaluation**.
 
-### Final validation on the held-out test set
+### Final Held-Out Test Evaluation
 
 After freezing the threshold at **0.03**, I evaluated the unchanged decision rule on the previously unseen test set.
 
