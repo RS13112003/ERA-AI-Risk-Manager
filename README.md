@@ -447,11 +447,11 @@ In a real financial environment, this value would typically be calibrated using 
 
 ##  Testing
 
-The original Credit Card Fraud Detection dataset used for model training is not included in this repository because of GitHub's file-size limitations. The dataset source, attribution, and download information are documented separately in [`data/README.md`](data/README.md)
+The original **Credit Card Fraud Detection** dataset used for model training is not included in this repository because of its large file size.
 
-The repository includes separate sample CSV datasets under the data/ directory so that the application can be tested without requiring the original training dataset.
+The dataset source, attribution, and training information are documented in [`data/README.md`](data/README.md).
 
-A separate sample/test dataset is provided so that users can test the application without modifying the training dataset.
+The repository includes separate sample datasets for testing the trained model and web application without requiring the original training dataset.
 
 Recommended testing flow:
 
