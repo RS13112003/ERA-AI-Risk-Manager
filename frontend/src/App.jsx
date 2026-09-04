@@ -1,6 +1,3 @@
-import React from "react";
-import { Check, AlertTriangle, Plus, ArrowUp, ArrowRight } from "lucide-react";
-
 import Header from './components/Header'
 
 import DashboardHeader from './components/dashboard/DashboardHeader'
