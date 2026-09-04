@@ -128,10 +128,14 @@ The repository is organized to separate the application, machine-learning assets
 ```text
 AI-Risk-Manager/
 │
-├── data/
-│   ├── creditcard.csv
-│   └── sample/
-│       └── sample_transactions.csv
+data/
+├── demo/
+│   └── [sample/demo CSV files]
+├── validation/
+│   └── [validation CSV files]
+├── README.md
+└── training_dataset
+|
 │
 ├── models/
 │   └── final_xgb_model.pkl
