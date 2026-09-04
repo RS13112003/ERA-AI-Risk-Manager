@@ -374,7 +374,7 @@ Using the same predefined error costs:
 ```text
 Default threshold (0.50): Rs 81,000
 Final threshold (0.03):   Rs 75,100
-**Cost reduction:** Rs 5,900 (**7.28%**)
+Cost reduction: Rs 5,900 (7.28%)
 ```
 
 This represents:
