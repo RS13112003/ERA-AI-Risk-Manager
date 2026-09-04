@@ -290,6 +290,137 @@ Measures the model's ability to distinguish between fraudulent and legitimate tr
 Measures performance using the precision-recall relationship and is particularly informative for highly imbalanced classification problems.
 
 ---
+## Failure Case & Recovery
+
+One of the most important issues I encountered was not a software crash, but a modeling and decision-policy problem: the default classification threshold of **0.50** was not appropriate for the business objective of fraud detection.
+
+### What initially went wrong
+
+The XGBoost classifier produced a fraud probability for every transaction. The first evaluation used the conventional threshold of **0.50**:
+
+```text
+Predicted Fraud  ->  probability >= 0.50
+Predicted Legit  ->  probability < 0.50
+```
+
+Although this is a common starting point for binary classification, it is not necessarily the correct operating point for fraud detection.
+Fraud detection is a highly imbalanced classification problem, where legitimate transactions greatly outnumber fraudulent ones. More importantly, the two types of classification errors do not have equal business impact:
+
+* A **false positive (FP)** means a legitimate transaction is sent for unnecessary review or intervention.
+* A **false negative (FN)** means a fraudulent transaction is missed.
+
+For this project, I explicitly modeled these costs as:
+
+```text
+False Positive Cost = Rs 100
+False Negative Cost = Rs 5,000
+```
+
+This means missing a fraudulent transaction was treated as significantly more costly than reviewing an additional legitimate transaction.
+
+When the default **0.50 threshold** was evaluated on the held-out test set, the resulting errors produced a total modeled cost of:
+
+```text
+Default threshold (0.50): Rs 81,000
+```
+
+This showed that the model itself was not the only problem. The more important issue was that the **decision threshold had not been aligned with the actual risk objective**.
+
+### How I handled it
+
+Instead of changing the model repeatedly or optimizing directly on the final test set, I separated the problem into two stages:
+
+1. **Model training and validation**
+2. **Final held-out evaluation**
+
+I first performed threshold analysis on the validation data. Multiple candidate thresholds were evaluated using the predefined false-positive and false-negative costs.
+
+The objective was to minimize:
+
+```text
+Total Risk Cost = (False Positives × Rs 100) + (False Negatives × Rs 5,000)
+```
+
+The validation analysis showed that a much lower operating threshold provided a better cost-sensitive trade-off than the default 0.50 threshold.
+
+The selected threshold was:
+
+```text
+Final frozen threshold = 0.03
+```
+
+Importantly, I did **not** choose this threshold by looking at the final test-set result and then tuning it against that same test set. The threshold was selected using the validation stage and then **frozen before final evaluation**.
+
+### Final validation on the held-out test set
+
+After freezing the threshold at **0.03**, I evaluated the unchanged decision rule on the previously unseen test set.
+
+The final held-out results were:
+
+| Metric          |     Result |
+| --------------- | ---------- |
+| Precision       | **62.22%** |
+| Recall          | **85.71%** |
+| F1 Score        | **72.10%** |
+| PR-AUC          | **86.81%** |
+| ROC-AUC         | **97.93%** |
+| True Negatives  | **56,813** |
+| False Positives |     **51** |
+| False Negatives |     **14** |
+| True Positives  |     **84** |
+
+Using the same predefined error costs:
+
+```text
+Default threshold (0.50): Rs 81,000
+Final threshold (0.03):   Rs 75,100
+**Cost reduction:** Rs 5,900 (**7.28%**)
+```
+
+This represents:
+
+```text
+Absolute cost reduction = Rs 5,900
+Relative cost reduction = 7.28%
+```
+
+The important point is that the improvement was measured on the **held-out test set only after the threshold had been selected and frozen**.
+
+### What I learned
+
+This failure changed how I approached the system.
+
+The initial assumption was effectively:
+
+```text
+"Train a good classifier -> use the standard 0.50 threshold"
+```
+
+The corrected approach became:
+
+```text
+"Train a useful classifier
+ -> evaluate it honestly
+ -> define the cost of mistakes
+ -> optimize the operating threshold on validation data
+ -> freeze the decision policy
+ -> evaluate once on unseen test data"
+```
+
+For a real merchant-risk workflow, the classification threshold is therefore not treated as a universal ML default. It is a **risk-policy decision** that depends on the cost of false positives, false negatives, operational capacity, and the consequences of intervention.
+
+### Why this matters for the Risk Manager
+
+The goal of this project is not simply to maximize a generic ML score. The system is designed to help a merchant manage risk while making the trade-off between missed fraud and unnecessary review explicit.
+
+For this reason, the final system uses the model probability together with a cost-informed threshold and routes higher-risk transactions for **review/investigation** rather than treating the model as an unconditional automatic blocker.
+
+Detailed threshold analysis and the held-out evaluation are available in:
+
+* `notebooks/step6_cost_evaluation.ipynb`
+* `results/threshold_cost_comparison.csv`
+* `backend/python_services/risk_engine.py`
+
 
 ##  Risk Threshold
 
@@ -300,7 +431,7 @@ Conceptually:
 ```text
 P(fraud) < threshold  -> Lower-risk decision
 
-P(fraud) ≥ threshold -> Higher-risk decision
+P(fraud) >= threshold -> Higher-risk decision
 ```
 
 The threshold can be selected based on the desired balance between false positives and false negatives.
@@ -317,21 +448,7 @@ A separate sample/test dataset is provided so that users can test the applicatio
 Recommended testing flow:
 
 ```text
-Clone Repository
-      ↓
-Install Dependencies
-      ↓
-Start Backend
-      ↓
-Start Frontend
-      ↓
-Upload Sample CSV
-      ↓
-Run Prediction
-      ↓
-Inspect Risk Results
-      ↓
-Inspect SHAP Explanation
+Clone Repository ->  Install Dependencies -> Start Backend -> Start Frontend -> Upload Sample CSV -> Run Prediction -> Inspect Risk Results -> Inspect SHAP Explanation
 ```
 
 
@@ -352,15 +469,7 @@ The core objective of **AI Risk Manager** is not simply to predict fraud.
 It is to demonstrate how machine learning predictions can be transformed into an understandable **risk-management workflow**:
 
 ```text
-Prediction
-    +
-Probability
-    +
-Threshold
-    +
-Explanation
-    ↓
-Actionable Risk Decision
+Prediction  +  Probability  +  Threshold  +  Explanation  ->  Actionable Risk Decision
 ```
 
 That combination is what turns a machine-learning model into a practical risk-management application.
