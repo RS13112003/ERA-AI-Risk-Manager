@@ -136,8 +136,10 @@ AI-Risk-Manager/
 │   └── sample/
 │       └── sample_transactions.csv
 │
-├── model/
-│   └── <trained-model-files>
+├── models/
+│   └── final_xgb_model.pkl
+|   └── final_risk_config.pkl
+|
 │
 ├── backend/
 │   └── <backend-files>
@@ -226,7 +228,7 @@ Start the backend/API according to the backend entry point included in the repos
 Example:
 
 ```bash
-python app.py
+api.py, risk_engine.py and test_api.py
 ```
 
 Then start the frontend:
