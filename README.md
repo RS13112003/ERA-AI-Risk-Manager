@@ -105,13 +105,10 @@ For an investigated transaction, the system can show:
 ```text
 Transaction
      │
-     ▼
 Model Prediction
      │
-     ▼
 Fraud Probability
      │
-     ▼
 SHAP Explanation
      │
      ├── Feature A -> increased risk
