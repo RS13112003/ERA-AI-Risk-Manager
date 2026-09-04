@@ -454,13 +454,14 @@ Recommended testing flow:
 ```text
 Clone Repository ->  Install Dependencies -> Start Backend -> Start Frontend -> Upload Sample CSV/Test CSV -> Run Prediction -> Inspect Risk Results -> Inspect SHAP Explanation
 ```
-***Important Dataset Note***
+***Dataset Note***
 
-The original training dataset is used only for model development and training. It is not required when using the already-trained model through the web application.
+The original Credit Card Fraud Detection dataset used during model development and training is not included in this GitHub repository because of its large file size. It is not required when using the already-trained model through the web application. The original training dataset is only required for reproducing the training/development workflow. It is not required for normal application inference when using the provided trained model and test CSV files.
 For application testing, use the provided sample datasets in:
 
 data/demo/
 data/validation/
+
 
 These files are intended to demonstrate the prediction, batch-risk assessment, investigation workflow, and SHAP-based transaction explanation capabilities of the application.
 For details about the original training dataset, including its source and how it was used during model development, see:   data/README.md
