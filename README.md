@@ -1,151 +1,135 @@
-AI Risk Manager — Intelligent Transaction Fraud Detection
+# AI Risk Manager — Intelligent Transaction Fraud Detection
 
-AI Risk Manager is an end-to-end fraud detection and risk analysis project built around a simple idea: a fraud prediction is more useful when it can also be understood and acted on.
+An AI-powered fraud detection and risk analysis system that evaluates financial transactions, assigns a fraud probability, classifies transaction risk, and provides explainable insights into why a transaction was flagged.
 
-The application takes transaction data, predicts the probability of fraud, converts that probability into a risk level using a decision threshold, and provides SHAP-based explanations for the prediction.
+The project combines **machine learning, risk scoring, threshold-based decision making, SHAP explainability, and a web-based dashboard** into a single end-to-end workflow.
 
-The project brings together machine learning, risk scoring, explainability, and a web dashboard in one workflow.
+---
 
-🚀 Project Overview
+##  Project Overview
 
-Fraud detection is more than answering "Is this transaction fraudulent?"
+Fraud detection is not only about predicting whether a transaction is fraudulent.
 
-In a practical risk-management workflow, we also want to know:
+A practical risk management system should also answer:
 
-How risky is the transaction?
+* How risky is this transaction?
+* Why was it flagged?
+* How confident is the model?
+* What factors contributed to the decision?
+* How should the transaction be prioritized for investigation?
 
-How confident is the model?
+**AI Risk Manager** is designed around this complete workflow.
 
-What contributed to the prediction?
+The system takes transaction data as input, processes it through a trained machine-learning model, calculates a fraud probability, applies a decision threshold, and presents the result through an interactive web interface.
 
-Why was the transaction flagged?
+---
 
-Which transactions should be investigated first?
+##  Key Features are :-
 
-AI Risk Manager is designed with these questions in mind.
+###  Fraud Detection
 
-A transaction can be analyzed individually or as part of a CSV file. The application processes the data, generates a fraud probability, applies the selected threshold, assigns a risk level, and presents the result through the dashboard.
+Predicts the probability that a transaction is fraudulent using a trained machine-learning model.
 
-✨ Key Features
+### Risk Classification
 
-🔍 Fraud Detection
+Transactions are categorized into different risk levels based on the predicted fraud probability.
 
-The trained machine-learning model estimates the probability that a transaction is fraudulent.
+###  Threshold-Based Decision Making
 
-📊 Risk Classification
+A configurable decision threshold is used to determine whether a transaction should be considered high risk.
 
-The predicted probability is converted into a practical risk category so that suspicious transactions are easier to identify and prioritize.
+###  Explainable AI
 
-🎯 Threshold-Based Decisions
+SHAP-based explanations help identify the features that contributed most to an individual transaction's prediction.
 
-Instead of blindly relying on the default classification threshold, the project uses a configurable probability threshold to decide when a transaction should be treated as high risk.
+### CSV Analysis
 
-🧠 SHAP Explainability
+Supports batch analysis of transaction datasets through CSV upload.
 
-SHAP is used to show which features had the biggest influence on an individual prediction. This makes the model output easier to investigate instead of treating it as a black box.
+### Transaction Investigation
 
-📁 CSV Batch Analysis
+Provides transaction-level information to help investigate suspicious activity.
 
-A CSV file containing multiple transactions can be uploaded and analyzed in one go.
+### Interactive Dashboard
 
-🔎 Transaction Investigation
+A web interface presents model predictions, risk information, and explanations in an easy-to-understand format.
 
-The dashboard provides transaction-level information so that suspicious records can be inspected in more detail.
+###  End-to-End ML Workflow
 
-🖥️ Interactive Dashboard
+The project connects data processing, machine learning inference, risk scoring, explainability, and visualization into one workflow.
 
-The web interface brings predictions, risk information, and model explanations together in one place.
+---
 
-⚡ End-to-End Workflow
+##  System Architecture
 
-The project connects data processing, model inference, risk assessment, explainability, and visualization into a single application.
-
-🏗️ System Architecture
-
-The application follows an end-to-end flow from transaction input to an explainable risk decision.
-
+The application follows an end-to-end architecture:
 <p align="center">
   <img src="Architecture.png" alt="AI Risk Manager System Architecture" width="900">
 </p>
 
-The main flow is:
+---
 
-Transaction Data → Web Interface → Data Processing → ML Model → Fraud Probability + SHAP Explanation → Risk Assessment → Investigation Dashboard
+##  Machine Learning Approach
 
-🧠 Machine Learning Approach
+The model is trained using transaction-level financial data containing numerical features associated with transaction behavior.
 
-The model is trained on transaction-level financial data containing numerical features related to transaction behavior.
+The project focuses on the complete fraud-detection lifecycle:
 
-The overall machine-learning workflow is:
+```text
+Raw Transaction Data -> Data Preprocessing -> Feature Preparation -> Model Training ->  Evaluation -> Threshold Selection -> Model Deployment -> Risk Prediction -> Explainable Decision
+```
 
-Raw Transaction Data
-        ↓
-Data Preprocessing
-        ↓
-Feature Preparation
-        ↓
-Model Training
-        ↓
-Model Evaluation
-        ↓
-Threshold Selection
-        ↓
-Model Deployment
-        ↓
-Risk Prediction
-        ↓
-Explainable Decision
+Because fraud detection is a highly imbalanced classification problem, model evaluation should not rely only on accuracy.
 
-Fraud detection is a highly imbalanced classification problem, so accuracy alone is not enough to judge the model.
+The project considers metrics such as:
 
-The project considers:
+* Precision
+* Recall
+* F1-score
+* PR-AUC
+* ROC-AUC
+* Confusion Matrix
 
-Precision
+The decision threshold is also treated as an important risk-management parameter rather than simply relying on the default classification threshold.
 
-Recall
+---
 
-F1-score
+## Explainability with SHAP
 
-PR-AUC
+A fraud prediction becomes significantly more useful when the system can explain the prediction.
 
-ROC-AUC
+The application uses **SHAP (SHapley Additive exPlanations)** to identify the contribution of individual features to a transaction's prediction.
 
-Confusion Matrix
+For an investigated transaction, the system can show:
 
-The decision threshold is also treated as an important part of the risk-management process because changing the threshold changes the balance between missed fraud and false alarms.
-
-🔬 Explainability with SHAP
-
-A fraud score by itself does not tell an investigator why the model made its decision.
-
-For this reason, AI Risk Manager uses SHAP (SHapley Additive exPlanations) to break down individual predictions.
-
-For an investigated transaction, the workflow looks like this:
-
+```text
 Transaction
-     ↓
+     │
+     ▼
 Model Prediction
-     ↓
+     │
+     ▼
 Fraud Probability
-     ↓
+     │
+     ▼
 SHAP Explanation
-     ↓
-Features that increased or decreased the prediction
+     │
+     ├── Feature A -> increased risk
+     ├── Feature B -> decreased risk
+     ├── Feature C -> increased risk
+     └── Feature D -> increased risk
+```
 
-For example, the explanation can show that some features pushed the prediction toward a higher fraud probability while others pushed it in the opposite direction.
+This makes the system more suitable for a risk-management workflow where users need both a prediction and a reason behind that prediction.
 
-This gives the user additional context when reviewing a suspicious transaction.
+---
 
-SHAP explanations are intended to help understand the model's prediction. They should not be interpreted as proof that a transaction is actually fraudulent.
+## Project Structure
 
-📂 Project Structure
+The repository is organized to separate the application, machine-learning assets, data, and supporting files.
 
-The repository is organized to keep the application, model files, data, and experimentation work separated.
-
+```text
 AI-Risk-Manager/
-│
-├── assets/
-│   └── architecture.png
 │
 ├── data/
 │   ├── creditcard.csv
@@ -166,222 +150,174 @@ AI-Risk-Manager/
 │
 ├── requirements.txt
 ├── .gitignore
-└── README.md
+├── README.md
+└── <other-project-files>
+```
 
-The exact structure may vary slightly depending on the final files included in the repository.
+> The exact folder structure may vary depending on the final implementation of the project.
 
-🛠️ Tech Stack
+---
 
-Machine Learning
+##  Tech Stack
 
-Python
+### Machine Learning
 
-Scikit-learn
+* Python
+* Scikit-learn
+* Pandas
+* NumPy
+* SHAP
 
-Pandas
+### Data Analysis
 
-NumPy
+* Pandas
+* NumPy
+* Matplotlib / visualization libraries
 
-SHAP
+### Web Application
 
-Data Analysis & Visualization
+* React
+* JavaScript
+* HTML
+* CSS
 
-Pandas
+### Backend / API
 
-NumPy
+* Python-based backend/API framework used by the application
 
-Matplotlib
+### Development
 
-Other visualization libraries used by the project
+* Git
+* GitHub
 
-Frontend
+---
 
-React
+## Installation
 
-JavaScript
+### Create a virtual environment
 
-HTML
-
-CSS
-
-Backend / API
-
-Python-based backend/API framework used by the application
-
-Development & Version Control
-
-Git
-
-GitHub
-
-📦 Dataset
-
-The main training dataset used for this project is creditcard.csv.
-
-The dataset was obtained from the Credit Card Fraud Detection dataset available on Kaggle:
-
-Kaggle — Credit Card Fraud Detection Dataset
-
-The dataset is used for model training and experimentation. A separate sample CSV is included for testing the application without depending on the original training data.
-
-⚙️ Installation
-
-1. Clone the repository
-
-git clone https://github.com/<your-username>/<repository-name>.git
-cd <repository-name>
-
-2. Create a virtual environment
-
+```bash
 python -m venv venv
+```
 
-Activate it with:
+Activate it:
 
-Windows
+###  Install Python dependencies
 
-venv\Scripts\activate
-
-macOS / Linux
-
-source venv/bin/activate
-
-3. Install Python dependencies
-
+```bash
 pip install -r requirements.txt
+```
 
-4. Install frontend dependencies
+###  Install frontend dependencies
 
-Move into the frontend directory:
+Navigate to the frontend directory:
 
+```bash
 cd frontend
 npm install
+```
 
-▶️ Running the Application
+---
 
-Start the backend using the backend entry point included in the repository.
+## Running the Application
 
-For example:
+Start the backend/API according to the backend entry point included in the repository.
 
+Example:
+
+```bash
 python app.py
+```
 
 Then start the frontend:
 
+```bash
 cd frontend
 npm run dev
+```
 
-The frontend development server will display the local URL where the application can be opened.
+The application will then be available through the local development URL shown by the frontend development server.
 
-Use the actual backend entry file and commands included in the repository if they differ from the examples above.
+> The exact commands should match the final backend and frontend entry files committed to this repository.
 
-📄 Using the Application
+---
 
-Single Transaction Analysis
+##  Using the Application
 
-For an individual transaction, provide the required transaction information through the application.
+### Single Transaction Analysis
 
-The system then produces:
+Enter or provide transaction information through the application.
 
-Fraud Probability
-       ↓
-Risk Level
-       ↓
-Decision
-       ↓
-Explanation
+The system processes the transaction and returns:
 
-This makes it possible to see both the model's prediction and the reasoning information associated with that prediction.
+```text
+Fraud Probability  ->  Risk Level   ->   Decision  ->  Explanation
+```
 
-Batch CSV Analysis
+### Batch CSV Analysis
 
-The application also supports CSV-based analysis.
+Upload a CSV containing transaction records.
 
-Upload a CSV containing transaction records and the application processes the rows and returns predictions for the uploaded transactions.
+The application processes the rows and returns predictions for the uploaded transactions.
 
-A sample CSV is included in the repository so that someone cloning the project can test the application without using the original training dataset.
+A sample CSV is included in the repository so that the application can be tested without requiring the original training dataset.
 
-📊 Model Evaluation
+---
 
-Because fraudulent transactions represent only a small portion of the overall dataset, the model is evaluated using metrics that give a better picture of performance than accuracy alone.
+##  Model Evaluation
 
-Precision
+The model is evaluated using classification metrics appropriate for an imbalanced fraud-detection problem.
 
-Precision tells us how many transactions predicted as fraud were actually fraudulent.
+Key evaluation concepts include:
 
-Recall
+**Precision**
 
-Recall tells us how many of the actual fraudulent transactions were successfully detected.
+Measures how many transactions predicted as fraud were actually fraudulent.
 
-F1-score
+**Recall**
 
-F1-score combines precision and recall into a single metric and is useful when both types of errors matter.
+Measures how many actual fraudulent transactions were successfully identified.
 
-ROC-AUC
+**F1-score**
 
-ROC-AUC measures how well the model separates fraudulent and legitimate transactions across different classification thresholds.
+Balances precision and recall.
 
-PR-AUC
+**ROC-AUC**
 
-PR-AUC focuses on the relationship between precision and recall. It is especially useful for evaluating models on highly imbalanced datasets such as fraud detection.
+Measures the model's ability to distinguish between fraudulent and legitimate transactions across classification thresholds.
 
-🎯 Risk Threshold
+**PR-AUC**
 
-The model produces a probability rather than simply returning a yes/no answer.
+Measures performance using the precision-recall relationship and is particularly informative for highly imbalanced classification problems.
 
-The threshold is then used to turn that probability into a practical decision:
+---
 
-P(fraud) < threshold
-        ↓
-Lower-risk decision
+##  Risk Threshold
+
+The system uses a probability threshold to convert the model's continuous fraud score into a practical decision.
+
+Conceptually:
+
+```text
+P(fraud) < threshold  -> Lower-risk decision
+
+P(fraud) ≥ threshold -> Higher-risk decision
+```
+
+The threshold can be selected based on the desired balance between false positives and false negatives.
+
+In a real financial environment, this value would typically be calibrated using business costs, investigation capacity, and fraud-loss considerations.
+
+---
 
 
-P(fraud) ≥ threshold
-        ↓
-Higher-risk decision
+##  Testing
 
-A lower threshold can catch more potentially fraudulent transactions, but it may also result in more false positives. A higher threshold can reduce false alarms, but it may allow some fraudulent transactions to pass through.
+A separate sample/test dataset is provided so that users can test the application without modifying the training dataset.
 
-In a real financial system, the threshold would normally be selected using factors such as:
+Recommended testing flow:
 
-Cost of false positives
-
-Cost of missed fraud
-
-Investigation capacity
-
-Fraud losses
-
-Business requirements
-
-For this project, the threshold is treated as a risk-management parameter rather than just a model setting.
-
-🔐 Security & Data Handling
-
-No real production credentials or secrets should be committed to the repository.
-
-The repository should not contain:
-
-API keys
-
-Passwords
-
-Access tokens
-
-Private credentials
-
-Environment secrets
-
-Unnecessary personal information
-
-Sensitive configuration should be handled using environment variables or another appropriate secure configuration method.
-
-The training dataset and sample data should also be handled according to their licensing and usage requirements.
-
-🧪 Testing the Application
-
-A separate sample dataset is provided so the application can be tested without changing the training data.
-
-A typical testing flow is:
-
+```text
 Clone Repository
       ↓
 Install Dependencies
@@ -394,90 +330,38 @@ Upload Sample CSV
       ↓
 Run Prediction
       ↓
-Review Risk Results
+Inspect Risk Results
       ↓
 Inspect SHAP Explanation
+```
 
-This gives a new user a straightforward way to understand the application after cloning the repository.
 
-⚠️ Disclaimer
+##  Author
 
-This project is intended for educational, research, demonstration, and portfolio purposes.
-
-It is not a production-ready financial fraud prevention system.
-
-A real-world deployment would require additional work around areas such as:
-
-Secure data pipelines
-
-Model monitoring
-
-Data drift detection
-
-Continuous model validation
-
-Authentication and authorization
-
-Privacy protection
-
-Compliance and regulatory requirements
-
-Production infrastructure
-
-Human review processes
-
-False-positive management
-
-The predictions generated by this project should therefore be treated as model outputs for demonstration and analysis, not as final financial decisions.
-
-🔮 Future Improvements
-
-There are several directions in which the project could be extended:
-
-Real-time transaction scoring
-
-Model monitoring and drift detection
-
-Automated retraining pipelines
-
-Advanced anomaly detection
-
-User and account behavioral profiling
-
-Streaming transaction analysis
-
-Continuous model performance monitoring
-
-More detailed investigation workflows
-
-Role-based access control
-
-Production-grade deployment
-
-👨‍💻 Author
-
-Ranit Sarkhel
+**Ranit Sarkhel**
 
 B.Tech — Computer Science & Engineering
 
-This project was built as an end-to-end exploration of machine learning, explainable AI, and risk-management workflows for financial fraud detection.
+This project was developed as an end-to-end exploration of machine learning, explainable AI, and risk-management workflows for financial fraud detection.
 
-⭐ Project Goal
+---
 
-The main goal of AI Risk Manager is not simply to build a model that predicts fraud.
+##  Project Goal
 
-The idea is to show what can be done after the model makes a prediction.
+The core objective of **AI Risk Manager** is not simply to predict fraud.
 
-The complete workflow is:
+It is to demonstrate how machine learning predictions can be transformed into an understandable **risk-management workflow**:
 
+```text
 Prediction
     +
-Fraud Probability
+Probability
     +
-Risk Threshold
+Threshold
     +
 Explanation
     ↓
 Actionable Risk Decision
+```
 
-By combining these pieces, the project turns a machine-learning prediction into something that can be inspected, understood, and used as part of a risk-management workflow.
+That combination is what turns a machine-learning model into a practical risk-management application.
