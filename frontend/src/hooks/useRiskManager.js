@@ -586,6 +586,76 @@ function useRiskManager() {
       )
     }
   }
+  // ============================================================
+  // LOAD SAMPLE / REPOSITORY DATASET
+  // ============================================================
+
+  const loadDataset = async (datasetKey) => {
+    const DATASET_URLS = {
+        synthetic:  'https://raw.githubusercontent.com/RS13112003/AI-Risk-Manager/main/data/demo/synthetic_fraud_transactions_10000.csv',
+
+        invalid:  'https://raw.githubusercontent.com/RS13112003/AI-Risk-Manager/main/data/demo/invalid_fraud_test.csv',
+
+        sample : 'https://raw.githubusercontent.com/RS13112003/AI-Risk-Manager/main/data/demo/csv_evaluation_demo.csv'
+
+      }
+
+    const DATASET_NAMES = {
+      synthetic: 'synthetic_fraud_transactions_10000.csv',
+      invalid: 'invalid_fraud_test.csv',
+      sample : 'csv_evaluation_demo.csv'
+    }
+
+    const url = DATASET_URLS[datasetKey]
+    const filename = DATASET_NAMES[datasetKey]
+
+    if (!url || !filename) {
+      setCsvError('Invalid dataset selection.')
+      return
+    }
+
+    setUploadedFile(null)
+    setCsvValidation(null)
+    setCsvError(null)
+    setCsvRows([])
+    setBatchResult(null)
+    setBatchError(null)
+    setBatchLoading(false)
+    setSelectedBatchRow(null)
+    setBatchProgress(null)
+
+    try {
+      const response = await fetch(url)
+
+      if (!response.ok) {
+        throw new Error(
+          `Unable to load ${filename} (${response.status}).`
+        )
+      }
+
+      const blob = await response.blob()
+
+      const file = new File(
+        [blob],
+        filename,
+        {
+          type: 'text/csv',
+        }
+      )
+
+      await validateCsvFile(file)
+    } catch (error) {
+      console.error(
+        'Dataset loading error:',
+        error
+      )
+
+      setCsvError(
+        error.message ||
+        'Unable to load the selected dataset.'
+      )
+    }
+  }
 
 
   // ============================================================
@@ -1299,6 +1369,7 @@ function useRiskManager() {
     parseCsvLine,
     parseCsvText,
     validateCsvFile,
+    loadDataset,
     analyzeCsv,
     selectBatchTransaction,
     analyzeSelectedBatchTransaction,
