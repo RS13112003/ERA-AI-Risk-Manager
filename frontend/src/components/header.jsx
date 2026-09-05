@@ -8,16 +8,21 @@ function Header({ apiOnline }) {
 
         {/* <div className="flex items-center gap-3"> */}
 
-          
+        <div className="flex items-center gap-3">
 
+            <div className="flex h-10 w-13 items-center justify-center rounded-xl bg-cyan-500/10 ring-1 ring-cyan-400/30">
 
+              <span className="text-lg font-bold text-cyan-400"> ERA </span>
+
+            </div>
           <div >
 
-            <h1 className="text-lg font-bold tracking-wide ">    AI RISK MANAGER  </h1>
+            <h1 className="text-lg font-bold tracking-wide "> AI RISK MANAGER  </h1>
 
-            <p className="text-xs text-slate-500">    Fraud Detection & Prevention  </p>
+            <p className="text-xs text-slate-500">  Fraud Detection & Prevention  </p>
 
           </div>
+        </div>
 
         {/* </div> */}
 
