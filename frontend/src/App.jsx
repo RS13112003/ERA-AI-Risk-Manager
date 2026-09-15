@@ -19,7 +19,6 @@ import TransactionResultsTable from './components/assessment/TransactionResultsT
 import BatchInvestigation from './components/assessment/BatchInvestigation'
 
 import ReviewModal from './components/risk/ReviewModal'
-
 import useRiskManager from './hooks/useRiskManager'
 
 
@@ -69,6 +68,7 @@ function App() {
     handleCustomInputChange,
     validateCustomTransaction,
     validateCsvFile,
+    loadDataset,
     analyzeCsv,
     selectBatchTransaction,
     analyzeSelectedBatchTransaction,
@@ -131,7 +131,7 @@ function App() {
             setReviewOpen={setReviewOpen}
             setReviewed={setReviewed}
             setApproved={setApproved}
-            setCustomTransaction={setCustomTransaction}
+            setCustomTransaction={() => {}}
             setUploadedFile={setUploadedFile}
             setCsvValidation={setCsvValidation}
             setCsvError={setCsvError}
@@ -142,6 +142,7 @@ function App() {
             setSelectedBatchRow={setSelectedBatchRow}
             setBatchProgress={setBatchProgress}
             startNewAssessment={startNewAssessment}
+            loadDataset={loadDataset}
             onBack={() => setNewAssessment(false)}
           >
 

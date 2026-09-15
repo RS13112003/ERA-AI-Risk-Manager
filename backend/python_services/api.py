@@ -16,11 +16,11 @@
 # - The existing single-transaction risk engine is reused.
 # ============================================================
 
-import pandas as pd
+import pandas as pd  # pyright: ignore[reportMissingModuleSource]
 
 from fastapi import FastAPI, HTTPException  # pyright: ignore[reportMissingImports]
 from fastapi.middleware.cors import CORSMiddleware  # pyright: ignore[reportMissingImports]
-from pydantic import BaseModel
+from pydantic import BaseModel  # pyright: ignore[reportMissingImports]
 from typing import Dict, List
 
 from .risk_engine import (
@@ -67,11 +67,12 @@ app.add_middleware(
 # 3. DEMO DATA
 # ============================================================
 
-_DEMO_DATA_PATH = PROJECT_ROOT / "data" / "tranning" /"creditcard.csv"
-# In my local machine there is creditcard.csv under tranning subfolder, its not possible to upload the csv file due to size limit 
+_DEMO_DATA_PATH = PROJECT_ROOT / "data" / "training" /"creditcard.csv"
+# In my local machine there is creditcard.csv under tranning subfolder, its not possible to upload the csv file due to size limit
 
 try:
     _demo_df = pd.read_csv(_DEMO_DATA_PATH)
+
 except Exception as error:
     raise RuntimeError(
         f"Unable to load demo dataset:\n"
@@ -85,15 +86,15 @@ except Exception as error:
 # ============================================================
 
 class TransactionRequest(BaseModel):
-    """
-    One transaction containing exactly the 30 model features.
+    
+    # One transaction containing exactly the 30 model features.
 
-    The model feature schema is:
+    # The model feature schema is:
 
-        Time
-        V1 ... V28
-        Amount
-    """
+    #     Time
+    #     V1 ... V28
+    #     Amount
+    
 
     Time: float
 
@@ -130,15 +131,14 @@ class TransactionRequest(BaseModel):
 
 
 class BatchTransactionRequest(BaseModel):
-    """
-    Multiple transactions for batch assessment.
+    # Multiple transactions for batch assessment.
 
-    Each dictionary must contain the exact 30 model features.
+    # Each dictionary must contain the exact 30 model features.
 
-    An optional 'Class' field is allowed when the uploaded
-    dataset contains ground-truth labels. 'Class' is NEVER
-    sent to the XGBoost model.
-    """
+    # An optional 'Class' field is allowed when the uploaded
+    # dataset contains ground-truth labels. 'Class' is NEVER
+    # sent to the XGBoost model.
+  
 
     transactions: List[Dict[str, float]]
 
@@ -247,10 +247,10 @@ def demo_legitimate():
 
 @app.get("/api/demo/fraudulent")
 def demo_fraudulent():
-    """
-    Load the first fraudulent transaction from creditcard.csv
-    and run it through the existing risk engine.
-    """
+
+    # Load the first fraudulent transaction from creditcard.csv
+    # and run it through the existing risk engine.
+
 
     try:
         fraudulent_rows = _demo_df[
@@ -294,32 +294,17 @@ def demo_fraudulent():
 def assess_risk(
     transaction: TransactionRequest,
 ):
-    """
-    Assess exactly one transaction.
+    
+    # Assess exactly one transaction.
 
-    Flow:
-
-        React
-          ↓
-        POST /api/assess-risk
-          ↓
-        DataFrame
-          ↓
-        score_transaction()
-          ↓
-        XGBoost + SHAP
-          ↓
-        JSON result
-    """
+    # Flow:
+    #     React  -> POST /api/assess-risk -> DataFrame -> score_transaction() -> XGBoost + SHAP -> JSON result
+    
 
     try:
-        transaction_df = transaction_request_to_dataframe(
-            transaction
-        )
+        transaction_df = transaction_request_to_dataframe(transaction)
 
-        result = score_transaction(
-            transaction_df
-        )
+        result = score_transaction(transaction_df)
 
         return {
             "success": True,
@@ -352,18 +337,18 @@ def assess_risk(
 def assess_batch(
     request: BatchTransactionRequest,
 ):
-    """
-    Assess multiple transactions in one API request.
 
-    Required:
-        Time, V1...V28, Amount
+    # Assess multiple transactions in one API request.
 
-    Optional:
-        Class
+    # Required:
+    #     Time, V1...V28, Amount
 
-    'Class' is treated as ground truth only and is never
-    passed into the model.
-    """
+    # Optional:
+    #     Class
+
+    # 'Class' is treated as ground truth only and is never
+    # passed into the model.
+    
 
     try:
 
@@ -593,36 +578,20 @@ def assess_batch(
             probabilities
         ):
 
-            fraud_flag = bool(
-                fraud_flags[index]
-            )
+            fraud_flag = bool(fraud_flags[index])
 
-            risk_level = (
-                "HIGH"
-                if fraud_flag
-                else "LOW"
-            )
+            risk_level = ("HIGH" if fraud_flag else "LOW")
 
-            recommended_action = (
-                "REVIEW"
-                if fraud_flag
-                else "ALLOW"
-            )
+            recommended_action = ("REVIEW" if fraud_flag else "ALLOW" )
 
             result = {
                 "row_number": index + 1,
 
-                "fraud_probability": float(
-                    probability
-                ),
+                "fraud_probability": float(probability),
 
-                "fraud_percentage": float(
-                    probability * 100
-                ),
+                "fraud_percentage": float(probability * 100),
 
-                "threshold": float(
-                    FINAL_THRESHOLD
-                ),
+                "threshold": float(FINAL_THRESHOLD),
 
                 "fraud_flag": fraud_flag,
 
@@ -648,18 +617,11 @@ def assess_batch(
         # SUMMARY
         # ====================================================
 
-        total_transactions = len(
-            results
-        )
+        total_transactions = len(results)
 
-        high_risk_count = int(
-            fraud_flags.sum()
-        )
+        high_risk_count = int(fraud_flags.sum())
 
-        low_risk_count = (
-            total_transactions
-            - high_risk_count
-        )
+        low_risk_count = (total_transactions - high_risk_count)
 
         summary = {
             "total_transactions":
@@ -770,26 +732,19 @@ def assess_batch(
 
 
             evaluation = {
-                "precision":
-                    float(precision),
+                "precision" : float(precision),
 
-                "recall":
-                    float(recall),
+                "recall" : float(recall),
 
-                "accuracy":
-                    float(accuracy),
+                "accuracy" : float(accuracy),
 
-                "true_positive":
-                    true_positive,
+                "true_positive" : true_positive,
 
-                "true_negative":
-                    true_negative,
+                "true_negative" : true_negative,
 
-                "false_positive":
-                    false_positive,
+                "false_positive" : false_positive,
 
-                "false_negative":
-                    false_negative,
+                "false_negative": false_negative,
             }
 
 
@@ -799,15 +754,10 @@ def assess_batch(
 
         return {
             "success": True,
-
             "result": {
                 "summary": summary,
-
-                "evaluation":
-                    evaluation,
-
-                "results":
-                    results,
+                "evaluation" : evaluation,
+                "results" : results,
             },
         }
 
@@ -818,10 +768,7 @@ def assess_batch(
 
     except Exception as error:
 
-        print(
-            "Batch assessment error:",
-            error,
-        )
+        print("Batch assessment error:", error,)
 
         raise HTTPException(
             status_code=500,
@@ -832,6 +779,5 @@ def assess_batch(
         )
 
 
-# ============================================================
 # END OF API
-# ============================================================
+
