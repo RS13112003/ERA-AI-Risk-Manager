@@ -592,11 +592,11 @@ function useRiskManager() {
 
   const loadDataset = async (datasetKey) => {
     const DATASET_URLS = {
-        synthetic:  'https://raw.githubusercontent.com/RS13112003/AI-Risk-Manager/main/data/demo/synthetic_fraud_transactions_10000.csv',
+        synthetic:  'https://raw.githubusercontent.com/RS13112003/ERA-AI-Risk-Manager/main/data/demo/synthetic_fraud_transactions_10000.csv',
 
-        invalid:  'https://raw.githubusercontent.com/RS13112003/AI-Risk-Manager/main/data/demo/invalid_fraud_test.csv',
+        invalid:  'https://raw.githubusercontent.com/RS13112003/ERA-AI-Risk-Manager/main/data/demo/invalid_fraud_test.csv',
 
-        sample : 'https://raw.githubusercontent.com/RS13112003/AI-Risk-Manager/main/data/demo/csv_evaluation_demo.csv'
+        sample : 'https://raw.githubusercontent.com/RS13112003/ERA-AI-Risk-Manager/main/data/demo/csv_evaluation_demo.csv'
 
       }
 
