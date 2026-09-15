@@ -1,4 +1,4 @@
-import Header from './components/Header'
+import Header from './components/header.jsx'
 
 import DashboardHeader from './components/dashboard/DashboardHeader'
 import DemoTransactions from './components/dashboard/DemoTransactions'
